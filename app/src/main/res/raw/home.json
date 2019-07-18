@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "title": "walk and talk charity",
+      "image": "https://images.pexels.com/photos/237018/pexels-photo-237018.jpeg",
+      "price": "3.35 mil",
+      "type": "https://s3.envato.com/files/117067780/Color%20PNG/Cat%20Funny%20Icon-05.png",
+      "eventType": {
+        "image": "http://downloadicons.net/sites/default/files/App-Group-cobfig-Icon-252023.png",
+        "name": "Group"
+      }
+    },
+    {
+      "title": "Real estate",
+      "image": "https://www.homestratosphere.com/wp-content/uploads/2017/12/blue-house-exterior-dec21.jpg",
+      "price": "3.35 mil",
+      "type": "https://s3.envato.com/files/117067780/Color%20PNG/Cat%20Funny%20Icon-05.png",
+      "eventType": {
+        "image": "http://www.sclance.com/pngs/event-icon-png/event_icon_png_454157.png",
+        "name": "Event"
+      }
+    },
+    {
+      "title": "walk and talk charity",
+      "image": "https://images.pexels.com/photos/237018/pexels-photo-237018.jpeg",
+      "price": "3.35 mil",
+      "type": "https://s3.envato.com/files/117067780/Color%20PNG/Cat%20Funny%20Icon-05.png",
+      "eventType": {
+        "image": "http://downloadicons.net/sites/default/files/App-Group-cobfig-Icon-252023.png",
+        "name": "Group"
+      }
+    },
+    {
+      "title": "Real estate",
+      "image": "https://www.homestratosphere.com/wp-content/uploads/2017/12/blue-house-exterior-dec21.jpg",
+      "price": "3.35 mil",
+      "type": "https://s3.envato.com/files/117067780/Color%20PNG/Cat%20Funny%20Icon-05.png",
+      "eventType": {
+        "image": "http://www.sclance.com/pngs/event-icon-png/event_icon_png_454157.png",
+        "name": "Event"
+      }
+    },
+    {
+      "title": "Real estate",
+      "image": "https://www.homestratosphere.com/wp-content/uploads/2017/12/blue-house-exterior-dec21.jpg",
+      "price": "3.35 mil",
+      "type": "https://s3.envato.com/files/117067780/Color%20PNG/Cat%20Funny%20Icon-05.png",
+      "eventType": {
+        "image": "http://www.sclance.com/pngs/event-icon-png/event_icon_png_454157.png",
+        "name": "Event"
+      }
+    }
+  ]
+}
