@@ -3,14 +3,16 @@ package com.trunghoang.generalapp.ui.homespot
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.miller.loadmoredbnetwork.BaseLoadMoreAdapter
+import com.trunghoang.generalapp.BR
 import com.trunghoang.generalapp.R
-import com.trunghoang.generalapp.baseloadmore.BaseLoadMoreAdapter
 import com.trunghoang.generalapp.data.model.HomeSpot
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
 class HomeSpotAdapter : BaseLoadMoreAdapter<HomeSpot>(homeSpotCallback) {
+    override val itemBindingVariable: Int = BR.item
 
     override fun getItemLayoutRes(): Int {
         return R.layout.item_home_spot

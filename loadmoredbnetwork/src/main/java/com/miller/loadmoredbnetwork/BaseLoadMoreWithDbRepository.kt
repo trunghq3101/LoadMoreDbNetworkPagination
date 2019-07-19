@@ -3,31 +3,28 @@ package com.miller.loadmoredbnetwork
 import androidx.annotation.MainThread
 import androidx.paging.DataSource
 import androidx.paging.toLiveData
+import com.miller.loadmoredbnetwork.ILoadMoreWithDbRepository.Companion.DEFAULT_NETWORK_PAGE_SIZE
 import java.util.concurrent.Executor
 
 /**
  * Created by Hoang Trung on 15/07/2019
  */
-
-abstract class BaseLoadMoreWithDbRepository<Item, Key>(
+abstract class BaseLoadMoreWithDbRepository<Item: ILoadMoreEntity, Key>(
+    private val db: BaseLoadMoreDb<Item, Key>,
     private val ioExecutor: Executor,
-    private val networkPageSize: Int = DEFAULT_NETWORK_PAGE_SIZE
-) {
-    companion object {
-        private const val DEFAULT_NETWORK_PAGE_SIZE = 19
-    }
+    private val networkPageSize: Int? = DEFAULT_NETWORK_PAGE_SIZE
+): ILoadMoreWithDbRepository<Item, Key> {
 
     @MainThread
-    fun getListData(key: Key, pageSize: Int): Listing<Item> {
+    override fun refreshData(): Listing<Item> {
         val boundaryCallback = BaseBoundaryCallback(
-            key = key,
             repository = this,
-            handleResponse = this::insertResultIntoDb,
             ioExecutor = ioExecutor,
-            networkPageSize = networkPageSize
+            networkPageSize = networkPageSize,
+            handleResponse = this::insertResultIntoDb
         )
-        val livePagedList = getListDataFromDb().toLiveData(
-            pageSize = pageSize,
+        val livePagedList = getDataSourceFromDb().toLiveData(
+            pageSize = networkPageSize ?: DEFAULT_NETWORK_PAGE_SIZE,
             boundaryCallback = boundaryCallback
         )
         return Listing(
@@ -36,15 +33,18 @@ abstract class BaseLoadMoreWithDbRepository<Item, Key>(
         )
     }
 
-    abstract fun insertResultIntoDb(key: Key, result: BaseLoadMoreResponse<Item, Key>)
+    override fun getDataSourceFromDb(): DataSource.Factory<Key, Item> {
+        return db.Dao().getPagingData()
+    }
 
-    abstract fun getListDataFromDb(): DataSource.Factory<Int, Item>
-
-    abstract fun getListDataFromRemote(
-        key: Key? = null,
-        loadSize: Int? = null,
-        onSuccess: (result: BaseLoadMoreResponse<Item, Key>) -> Unit,
-        onError: (t: Throwable?) -> Unit)
-
-    abstract fun swapItem(from: Int, to: Int)
+    override fun insertResultIntoDb(key: Key?, result: BaseLoadMoreResponse<Item, Key>) {
+        db.runInTransaction {
+            val start = db.Dao().getNextIndex()
+            val items = result.getListData().mapIndexed { index, entity ->
+                entity.indexInResponse = start + index
+                entity
+            }
+            db.Dao().insert(items)
+        }
+    }
 }

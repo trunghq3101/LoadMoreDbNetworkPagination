@@ -1,7 +1,10 @@
 package com.miller.loadmoredbnetwork
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
@@ -16,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseLoadMoreAdapter<Item>(
     diffCallback: DiffUtil.ItemCallback<Item>
 ) : PagedListAdapter<Item, RecyclerView.ViewHolder>(diffCallback) {
+
+    abstract val itemBindingVariable: Int
 
     var networkState: NetworkState? = null
         set(value) {
@@ -38,8 +43,7 @@ abstract class BaseLoadMoreAdapter<Item>(
         val inflater = LayoutInflater.from(parent.context)
         return when (viewType) {
             TYPE_PROGRESS -> NetworkStateItemViewHolder(
-                DataBindingUtil.inflate(
-                    inflater,
+                inflater.inflate(
                     R.layout.item_loadmore_network_state,
                     parent,
                     false
@@ -66,7 +70,7 @@ abstract class BaseLoadMoreAdapter<Item>(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
-            holder.binding.setVariable(BR.item, getItem(position))
+            holder.binding.setVariable(itemBindingVariable, getItem(position))
         } else if (holder is NetworkStateItemViewHolder){
             holder.bind(networkState)
         }
@@ -89,27 +93,25 @@ abstract class BaseLoadMoreAdapter<Item>(
 
     open class ItemViewHolder(
         val binding: ViewDataBinding
-    ): RecyclerView.ViewHolder(binding.root) {
-    }
+    ): RecyclerView.ViewHolder(binding.root)
 
-    class NetworkStateItemViewHolder(
-        val binding: ItemLoadmoreNetworkStateBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    class NetworkStateItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        private val progressBarView = itemView.findViewById<ProgressBar>(R.id.progressLoadMore)
+        private val errorView = itemView.findViewById<TextView>(R.id.textError)
 
         fun bind(networkState: NetworkState?) {
-            with(binding) {
                 var showProgressBar = false
                 var showError = false
                 if (networkState != null && networkState.status == NetworkState.Status.RUNNING) {
                     showProgressBar = true
                 }
-                setVariable(BR.showProgressBar, showProgressBar)
+                progressBarView.visibility = if (showProgressBar) View.VISIBLE else View.GONE
                 if (networkState != null && networkState.status == NetworkState.Status.FAILED) {
                     showError = true
-                    setVariable(BR.msgError, networkState.msg)
+                    errorView.text = networkState.msg
                 }
-                setVariable(BR.showError, showError)
-            }
+                errorView.visibility = if (showError) View.VISIBLE else View.GONE
         }
 
     }

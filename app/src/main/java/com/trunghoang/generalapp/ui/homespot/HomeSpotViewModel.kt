@@ -1,20 +1,20 @@
 package com.trunghoang.generalapp.ui.homespot
 
-import com.trunghoang.generalapp.baseloadmore.BaseLoadMoreWithDbRepository
-import com.trunghoang.generalapp.baseloadmore.BaseLoadMoreWithDbViewModel
-import com.trunghoang.generalapp.baseloadmore.Listing
+import com.miller.loadmoredbnetwork.BaseLoadMoreWithDbViewModel
+import com.miller.loadmoredbnetwork.Listing
 import com.trunghoang.generalapp.data.model.HomeSpot
+import com.trunghoang.generalapp.data.repository.HomeSpotWithDbRepository
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
 
 class HomeSpotViewModel(
-    private val repository: BaseLoadMoreWithDbRepository<HomeSpot, String>
+    private val repository: HomeSpotWithDbRepository
 ) : BaseLoadMoreWithDbViewModel<HomeSpot>() {
 
     override fun getInitData(): Listing<HomeSpot> {
-        return repository.getListData("", 10)
+        return repository.refreshData()
     }
 
     fun swapItems(from: Int, to: Int) {

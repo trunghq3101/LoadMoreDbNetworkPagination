@@ -2,6 +2,7 @@ package com.trunghoang.generalapp.data.local
 
 import androidx.paging.DataSource
 import androidx.room.*
+import com.miller.loadmoredbnetwork.BaseLoadMoreDb
 import com.trunghoang.generalapp.data.model.HomeSpot
 
 /**
@@ -9,20 +10,14 @@ import com.trunghoang.generalapp.data.model.HomeSpot
  */
 
 @Dao
-interface HomeSpotDao {
+abstract class HomeSpotDao: BaseLoadMoreDb.ILoadMoreDao<HomeSpot, Int> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insert(spots: List<HomeSpot>)
+    abstract fun insert(list: List<HomeSpot>)
 
-    @Query("SELECT * FROM spots ORDER BY indexInResponse ASC")
-    fun getSpots(): DataSource.Factory<Int, HomeSpot>
-
-    @Query("SELECT MAX(indexInResponse) + 1 FROM spots")
-    fun getNextIndex(): Int
-
-    @Query("SELECT * FROM spots WHERE indexInResponse =:position")
-    fun getSpot(position: Int): HomeSpot
+    @Query("SELECT * FROM page_data WHERE indexInResponse =:position")
+    abstract fun getSpot(position: Int): HomeSpot
 
     @Update
-    fun updateSpot(spot: HomeSpot)
+    abstract fun updateSpot(spot: HomeSpot)
 }

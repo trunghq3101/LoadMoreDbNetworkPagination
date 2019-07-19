@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.miller.loadmoredbnetwork.BaseLoadMoreDb
 import com.trunghoang.generalapp.data.model.HomeSpot
 
 /**
@@ -12,10 +13,10 @@ import com.trunghoang.generalapp.data.model.HomeSpot
 
 @Database(
     entities = [HomeSpot::class],
-    version = 2,
+    version = 3,
     exportSchema = false
 )
-abstract class HomeSpotDb : RoomDatabase() {
+abstract class HomeSpotDb : BaseLoadMoreDb<HomeSpot, Int>() {
     companion object {
         private var INSTANCE: HomeSpotDb? = null
 
