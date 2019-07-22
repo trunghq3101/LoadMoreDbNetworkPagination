@@ -7,11 +7,11 @@ import com.miller.loadmoredbnetwork.BaseLoadMoreResponse
  * Created by Hoang Trung on 18/07/2019
  */
 
-data class HomeSpotListResponse (
+data class MovieListResponse (
     @SerializedName("Search")
-    val data: List<HomeSpot>
-) : BaseLoadMoreResponse<HomeSpot, Int> {
-    override fun getListData(): List<HomeSpot> {
+    val data: List<Movie>
+) : BaseLoadMoreResponse {
+    override fun getListData(): List<Movie> {
         return data
     }
 }

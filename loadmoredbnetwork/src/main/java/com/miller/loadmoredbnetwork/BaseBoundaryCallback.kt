@@ -12,12 +12,12 @@ import java.util.concurrent.Executor
 /**
  * Created by Hoang Trung on 15/07/2019
  */
-class BaseBoundaryCallback<Item: ILoadMoreEntity, Key, ResponseType: BaseLoadMoreResponse<Item, Key>>(
-    private val repository: ILoadMoreWithDbRepository<Item, Key>,
+class BaseBoundaryCallback<Key, ResponseType: BaseLoadMoreResponse>(
+    private val repository: ILoadMoreWithDbRepository<Key, ResponseType>,
     private val ioExecutor: Executor,
     private val networkPageSize: Int?,
-    private val handleResponse: (key: Key?, response: BaseLoadMoreResponse<Item, Key>) -> Unit
-) : PagedList.BoundaryCallback<Item>(), PagingRequestHelper.Request {
+    private val handleResponse: (response: BaseLoadMoreResponse) -> Unit
+) : PagedList.BoundaryCallback<BaseLoadMoreEntity>(), PagingRequestHelper.Request {
     private val helper = PagingRequestHelper(ioExecutor)
     val networkState = helper.createStatusLiveData()
 
@@ -26,15 +26,15 @@ class BaseBoundaryCallback<Item: ILoadMoreEntity, Key, ResponseType: BaseLoadMor
         helper.runIfNotRunning(INITIAL, this)
     }
 
-    override fun onItemAtEndLoaded(itemAtEnd: Item) {
+    override fun onItemAtEndLoaded(itemAtEnd: BaseLoadMoreEntity) {
         helper.runIfNotRunning(AFTER, this)
     }
 
-    override fun onItemAtFrontLoaded(itemAtFront: Item) {
+    override fun onItemAtFrontLoaded(itemAtFront: BaseLoadMoreEntity) {
     }
 
     override fun run(callback: PagingRequestHelper.Request.Callback) {
-        repository.fetchDataFromNetwork<ResponseType>(
+        repository.fetchDataFromNetwork(
             key = repository.getKey(),
             loadSize = networkPageSize
         )
@@ -66,7 +66,7 @@ class BaseBoundaryCallback<Item: ILoadMoreEntity, Key, ResponseType: BaseLoadMor
         callback: PagingRequestHelper.Request.Callback
     ) {
         ioExecutor.execute {
-            handleResponse(repository.getKey(), response)
+            handleResponse(response)
             callback.recordSuccess()
             repository.nextKey(response)
         }

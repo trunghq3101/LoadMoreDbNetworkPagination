@@ -8,24 +8,24 @@ import retrofit2.Call
  * Created by Hoang Trung on 19/07/2019
  */
 
-interface ILoadMoreWithDbRepository<Item: ILoadMoreEntity, Key> {
+interface ILoadMoreWithDbRepository<Key, ResponseType: BaseLoadMoreResponse> {
     companion object {
         const val DEFAULT_NETWORK_PAGE_SIZE = 19
     }
 
     @MainThread
-    fun refreshData(): Listing<Item>
+    fun refreshData(): Listing
 
-    fun getDataSourceFromDb(): DataSource.Factory<Key, Item>
+    fun getDataSourceFromDb(): DataSource.Factory<String, BaseLoadMoreEntity<BaseLoadMoreEntity.Data>>
 
-    fun <T: BaseLoadMoreResponse<Item, Key>>fetchDataFromNetwork(
+    fun fetchDataFromNetwork(
         key: Key? = null,
         loadSize: Int? = null
-    ): Call<T>
+    ): Call<ResponseType>
 
-    fun insertResultIntoDb(key: Key? = null, result: BaseLoadMoreResponse<Item, Key>)
+    fun insertResultIntoDb(result: BaseLoadMoreResponse)
 
     fun getKey(): Key?
 
-    fun <T: BaseLoadMoreResponse<Item, Key>>nextKey(response: T)
+    fun nextKey(response: ResponseType)
 }

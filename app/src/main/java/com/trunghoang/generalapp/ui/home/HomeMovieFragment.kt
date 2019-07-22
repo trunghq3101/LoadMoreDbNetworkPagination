@@ -1,4 +1,4 @@
-package com.trunghoang.generalapp.ui.homespot
+package com.trunghoang.generalapp.ui.home
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,24 +9,24 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.trunghoang.generalapp.R
 import com.trunghoang.generalapp.util.SpacesItemDecoration
-import kotlinx.android.synthetic.main.fragment_home_spot.*
+import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
 
-class HomeSpotFragment : Fragment() {
+class HomeMovieFragment : Fragment() {
 
-    private val viewModel: HomeSpotViewModel by viewModel()
-    private val adapter: HomeSpotAdapter = HomeSpotAdapter()
+    private val viewModel: MovieViewModel by viewModel()
+    private val adapter: MovieAdapter = MovieAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_home_spot, container, false)
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -37,7 +37,7 @@ class HomeSpotFragment : Fragment() {
     fun initData() {
         recyclerHomeSpot.adapter = adapter
         recyclerHomeSpot.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_8)))
-        ItemTouchHelper(HomeSpotAdapter.SwipeCallback(adapter) { from, to ->
+        ItemTouchHelper(MovieAdapter.SwipeCallback(adapter) { from, to ->
             viewModel.swapItems(from, to)
         }).apply {
             attachToRecyclerView(recyclerHomeSpot)
@@ -46,7 +46,7 @@ class HomeSpotFragment : Fragment() {
     }
 
     fun observeField() {
-        viewModel.data?.observe(viewLifecycleOwner, Observer {
+        viewModel.data.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
         viewModel.networkState.observe(viewLifecycleOwner, Observer {
@@ -55,6 +55,6 @@ class HomeSpotFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance() = HomeSpotFragment()
+        fun newInstance() = HomeMovieFragment()
     }
 }

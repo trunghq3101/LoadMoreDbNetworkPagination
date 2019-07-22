@@ -1,25 +1,25 @@
-package com.trunghoang.generalapp.ui.homespot
+package com.trunghoang.generalapp.ui.home
 
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.miller.loadmoredbnetwork.BaseLoadMoreAdapter
+import com.miller.loadmoredbnetwork.BaseLoadMoreEntity
 import com.trunghoang.generalapp.BR
 import com.trunghoang.generalapp.R
-import com.trunghoang.generalapp.data.model.HomeSpot
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
-class HomeSpotAdapter : BaseLoadMoreAdapter<HomeSpot>(homeSpotCallback) {
+class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
     override val itemBindingVariable: Int = BR.item
 
     override fun getItemLayoutRes(): Int {
-        return R.layout.item_home_spot
+        return R.layout.item_movie
     }
 
     class SwipeCallback(
-        private val adapter: HomeSpotAdapter,
+        private val adapter: MovieAdapter,
         private val onItemMove: (from: Int, to: Int) -> Unit
     ) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
 
@@ -69,12 +69,12 @@ class HomeSpotAdapter : BaseLoadMoreAdapter<HomeSpot>(homeSpotCallback) {
 
 }
 
-val homeSpotCallback = object : DiffUtil.ItemCallback<HomeSpot>() {
-    override fun areItemsTheSame(oldItem: HomeSpot, newItem: HomeSpot): Boolean {
+val homeSpotCallback = object : DiffUtil.ItemCallback<BaseLoadMoreEntity<BaseLoadMoreEntity.Data>>() {
+    override fun areItemsTheSame(oldItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, newItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>): Boolean {
         return oldItem == newItem
     }
 
-    override fun areContentsTheSame(oldItem: HomeSpot, newItem: HomeSpot): Boolean {
+    override fun areContentsTheSame(oldItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, newItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>): Boolean {
         return oldItem == newItem
     }
 

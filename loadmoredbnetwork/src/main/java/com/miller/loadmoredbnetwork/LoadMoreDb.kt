@@ -1,33 +1,31 @@
-package com.trunghoang.generalapp.data.local
+package com.miller.loadmoredbnetwork
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.miller.loadmoredbnetwork.BaseLoadMoreDb
-import com.trunghoang.generalapp.data.model.HomeSpot
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
 
 @Database(
-    entities = [HomeSpot::class],
+    entities = [BaseLoadMoreEntity::class],
     version = 3,
     exportSchema = false
 )
-abstract class HomeSpotDb : BaseLoadMoreDb<HomeSpot, Int>() {
+abstract class LoadMoreDb: RoomDatabase() {
     companion object {
-        private var INSTANCE: HomeSpotDb? = null
+        private var INSTANCE: LoadMoreDb? = null
 
-        fun create(context: Context): HomeSpotDb? {
+        fun create(context: Context): LoadMoreDb? {
             if (INSTANCE == null) {
-                synchronized(HomeSpotDb::class.java) {
+                synchronized(LoadMoreDb::class.java) {
                     INSTANCE =
                         Room.databaseBuilder(
                             context.applicationContext,
-                            HomeSpotDb::class.java,
-                            "Homespot"
+                            LoadMoreDb::class.java,
+                            "LoadMore"
                         ).fallbackToDestructiveMigration()
                             .build()
                 }
@@ -36,5 +34,5 @@ abstract class HomeSpotDb : BaseLoadMoreDb<HomeSpot, Int>() {
         }
     }
 
-    abstract fun HomeSpotDao(): HomeSpotDao
+    abstract fun LoadMoreDao(): LoadMoreDao<BaseLoadMoreEntity.Data>
 }

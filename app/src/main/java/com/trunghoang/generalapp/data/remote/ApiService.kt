@@ -1,6 +1,6 @@
 package com.trunghoang.generalapp.data.remote
 
-import com.trunghoang.generalapp.data.model.HomeSpotListResponse
+import com.trunghoang.generalapp.data.model.MovieListResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -15,5 +15,5 @@ interface ApiService {
     fun searchMovies(
         @Query("s") keyword: String? = null,
         @Query("page") page: Int? =null
-    ): Call<HomeSpotListResponse>
+    ): Call<MovieListResponse>
 }

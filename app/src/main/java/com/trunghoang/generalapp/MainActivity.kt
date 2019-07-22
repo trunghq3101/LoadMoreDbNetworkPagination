@@ -2,7 +2,7 @@ package com.trunghoang.generalapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import com.trunghoang.generalapp.ui.homespot.HomeSpotFragment
+import com.trunghoang.generalapp.ui.home.HomeMovieFragment
 
 class MainActivity : AppCompatActivity() {
 
@@ -10,7 +10,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         supportFragmentManager.beginTransaction()
-            .add(R.id.container, HomeSpotFragment.newInstance(),null)
+            .add(R.id.container, HomeMovieFragment.newInstance(), null)
             .commit()
     }
 }
