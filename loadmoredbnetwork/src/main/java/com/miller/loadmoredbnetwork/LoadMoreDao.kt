@@ -8,20 +8,21 @@ import androidx.room.*
  */
 
 @Dao
-abstract class LoadMoreDao<T: BaseLoadMoreEntity.Data> {
+interface LoadMoreDao<T: BaseLoadMoreEntity> {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    abstract fun insert(list: List<BaseLoadMoreEntity<T>>)
+    @JvmSuppressWildcards
+    fun insert(list: List<T>)
 
     @Update
-    abstract fun update(item: BaseLoadMoreEntity<T>)
+    fun update(item: T)
 
     @Query("SELECT * FROM page_data ORDER BY indexInResponse ASC")
-    abstract fun getPagingData(): DataSource.Factory<String, BaseLoadMoreEntity<T>>
+    fun getPagingData(): DataSource.Factory<Int, T>
 
     @Query("SELECT MAX(indexInResponse) + 1 FROM page_data")
-    abstract fun getNextIndex(): Int
+    fun getNextIndex(): Int
 
     @Query("SELECT * FROM page_data WHERE indexInResponse = :position ")
-    abstract fun getItem(position: Int): BaseLoadMoreEntity<T>
+    fun getItem(position: Int): T
 }

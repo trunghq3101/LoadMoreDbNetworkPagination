@@ -12,12 +12,12 @@ import java.util.concurrent.Executor
 /**
  * Created by Hoang Trung on 15/07/2019
  */
-class BaseBoundaryCallback<Key, ResponseType: BaseLoadMoreResponse>(
-    private val repository: ILoadMoreWithDbRepository<Key, ResponseType>,
+class BaseBoundaryCallback<Item: BaseLoadMoreEntity, Key, ResponseType: BaseLoadMoreResponse<Item>>(
+    private val repository: ILoadMoreWithDbRepository<Item, Key, ResponseType>,
     private val ioExecutor: Executor,
     private val networkPageSize: Int?,
-    private val handleResponse: (response: BaseLoadMoreResponse) -> Unit
-) : PagedList.BoundaryCallback<BaseLoadMoreEntity>(), PagingRequestHelper.Request {
+    private val handleResponse: (response: BaseLoadMoreResponse<Item>) -> Unit
+) : PagedList.BoundaryCallback<Item>(), PagingRequestHelper.Request {
     private val helper = PagingRequestHelper(ioExecutor)
     val networkState = helper.createStatusLiveData()
 
@@ -26,11 +26,11 @@ class BaseBoundaryCallback<Key, ResponseType: BaseLoadMoreResponse>(
         helper.runIfNotRunning(INITIAL, this)
     }
 
-    override fun onItemAtEndLoaded(itemAtEnd: BaseLoadMoreEntity) {
+    override fun onItemAtEndLoaded(itemAtEnd: Item) {
         helper.runIfNotRunning(AFTER, this)
     }
 
-    override fun onItemAtFrontLoaded(itemAtFront: BaseLoadMoreEntity) {
+    override fun onItemAtFrontLoaded(itemAtFront: Item) {
     }
 
     override fun run(callback: PagingRequestHelper.Request.Callback) {

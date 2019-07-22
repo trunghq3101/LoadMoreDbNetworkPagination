@@ -2,9 +2,12 @@ package com.trunghoang.generalapp.data.repository
 
 import com.miller.loadmoredbnetwork.BaseLoadMoreWithDbRepository
 import com.miller.loadmoredbnetwork.LoadMoreDb
+import com.trunghoang.generalapp.data.local.MovieRoomDao
+import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.model.MovieListResponse
 import com.trunghoang.generalapp.data.remote.ApiService
 import retrofit2.Call
+import java.util.*
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
 
@@ -14,9 +17,9 @@ import java.util.concurrent.Executors
 
 class MovieRepositoryImpl(
     private val ioExecutor: Executor,
-    private val db: LoadMoreDb,
+    private val db: LoadMoreDb<Movie>,
     private val apiService: ApiService
-) : BaseLoadMoreWithDbRepository<Int, MovieListResponse>(
+) : BaseLoadMoreWithDbRepository<Movie, Int, MovieListResponse>(
     db = db,
     ioExecutor = ioExecutor,
     networkPageSize = 10
@@ -36,21 +39,25 @@ class MovieRepositoryImpl(
         key: Int?,
         loadSize: Int?
     ): Call<MovieListResponse> {
-        return apiService.searchMovies("Avenger", key)
+        return apiService.searchMovies(keyword = "Avenger", page = key)
     }
 
-    override fun swapItem(from: Int, to: Int) {
+    override fun swapItem(from: Movie, to: Movie) {
         Executors.newSingleThreadExecutor().execute {
-            db.runInTransaction {
-                val item1 = db.LoadMoreDao().getItem(from)
-                val item2 = db.LoadMoreDao().getItem(to)
-                val newItem1 = item1.copy()
-                newItem1.indexInResponse = item2.indexInResponse
-                val newItem2 = item2.copy()
-                newItem2.indexInResponse = item1.indexInResponse
-                db.LoadMoreDao().update(newItem1)
-                db.LoadMoreDao().update(newItem2)
+            val start = from.indexInResponse
+            val end = to.indexInResponse
+
+            val items = (db.LoadMoreDao() as MovieRoomDao).getBetween(start, end)
+            if (start < end) {
+                for (i in 0 until end - start) {
+                    Collections.swap(items, i, i+1)
+                }
+            } else {
+                for (i in end - start downTo 1) {
+                    Collections.swap(items, i, i - 1)
+                }
             }
+            (db.LoadMoreDao() as MovieRoomDao).updateAll(items)
         }
     }
 

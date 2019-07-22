@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
  * Created by Hoang Trung on 18/07/2019
  */
 
-abstract class BaseLoadMoreAdapter(
-    diffCallback: DiffUtil.ItemCallback<BaseLoadMoreEntity<BaseLoadMoreEntity.Data>>
-) : PagedListAdapter<BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, RecyclerView.ViewHolder>(diffCallback) {
+abstract class BaseLoadMoreAdapter<T: BaseLoadMoreEntity>(
+    diffCallback: DiffUtil.ItemCallback<T>
+) : PagedListAdapter<T, RecyclerView.ViewHolder>(diffCallback) {
 
     abstract val itemBindingVariable: Int
 
@@ -70,7 +70,7 @@ abstract class BaseLoadMoreAdapter(
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ItemViewHolder) {
-            holder.binding.setVariable(itemBindingVariable, getItem(position)?.data)
+            holder.binding.setVariable(itemBindingVariable, getItem(position))
         } else if (holder is NetworkStateItemViewHolder){
             holder.bind(networkState)
         }

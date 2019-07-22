@@ -4,14 +4,15 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.miller.loadmoredbnetwork.BaseLoadMoreAdapter
-import com.miller.loadmoredbnetwork.BaseLoadMoreEntity
 import com.trunghoang.generalapp.BR
 import com.trunghoang.generalapp.R
+import com.trunghoang.generalapp.data.model.Movie
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
-class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
+class MovieAdapter : BaseLoadMoreAdapter<Movie>(homeSpotCallback) {
+
     override val itemBindingVariable: Int = BR.item
 
     override fun getItemLayoutRes(): Int {
@@ -20,23 +21,23 @@ class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
 
     class SwipeCallback(
         private val adapter: MovieAdapter,
-        private val onItemMove: (from: Int, to: Int) -> Unit
+        private val onItemMove: (from: Movie, to: Movie) -> Unit
     ) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
+
+        private var from: Int = 0
+        private var to: Int = 0
 
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
         ): Boolean {
-            val from = viewHolder.adapterPosition
-            val to = target.adapterPosition
+            from = viewHolder.adapterPosition
+            to = target.adapterPosition
             val item1 = adapter.getItem(from)
             val item2 = adapter.getItem(to)
             if (item1 != null && item2 != null) {
-
-                // Notify database to swap items here
-                onItemMove(from, to)
-
+                adapter.notifyItemMoved(from, to)
                 return true
             }
             return false
@@ -46,8 +47,6 @@ class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
         }
 
         override fun isLongPressDragEnabled(): Boolean {
-
-            // It has to be true
             return true
         }
 
@@ -63,18 +62,22 @@ class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
             super.clearView(recyclerView, viewHolder)
             viewHolder.itemView.alpha = 1.0f
 
-            // Don't need to do anything here
+            val item1 = adapter.getItem(from)
+            val item2 = adapter.getItem(to)
+            if (item1 != null && item2 != null) {
+                onItemMove(item1, item2)
+            }
         }
     }
 
 }
 
-val homeSpotCallback = object : DiffUtil.ItemCallback<BaseLoadMoreEntity<BaseLoadMoreEntity.Data>>() {
-    override fun areItemsTheSame(oldItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, newItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>): Boolean {
-        return oldItem == newItem
+val homeSpotCallback = object : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, newItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>): Boolean {
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem == newItem
     }
 

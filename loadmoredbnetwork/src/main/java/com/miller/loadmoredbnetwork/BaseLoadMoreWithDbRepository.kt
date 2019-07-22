@@ -9,14 +9,14 @@ import java.util.concurrent.Executor
 /**
  * Created by Hoang Trung on 15/07/2019
  */
-abstract class BaseLoadMoreWithDbRepository<Key, ResponseType: BaseLoadMoreResponse>(
-    private val db: LoadMoreDb,
+abstract class BaseLoadMoreWithDbRepository<Item: BaseLoadMoreEntity, Key, ResponseType: BaseLoadMoreResponse<Item>>(
+    private val db: LoadMoreDb<Item>,
     private val ioExecutor: Executor,
     private val networkPageSize: Int? = DEFAULT_NETWORK_PAGE_SIZE
-): ILoadMoreWithDbRepository<Key, ResponseType> {
+): ILoadMoreWithDbRepository<Item, Key, ResponseType> {
 
     @MainThread
-    override fun refreshData(): Listing {
+    override fun refreshData(): Listing<Item> {
         val boundaryCallback = BaseBoundaryCallback(
             repository = this,
             ioExecutor = ioExecutor,
@@ -33,15 +33,16 @@ abstract class BaseLoadMoreWithDbRepository<Key, ResponseType: BaseLoadMoreRespo
         )
     }
 
-    override fun getDataSourceFromDb(): DataSource.Factory<String, BaseLoadMoreEntity<BaseLoadMoreEntity.Data>> {
+    override fun getDataSourceFromDb(): DataSource.Factory<Int, Item> {
         return db.LoadMoreDao().getPagingData()
     }
 
-    override fun insertResultIntoDb(result: BaseLoadMoreResponse) {
+    override fun insertResultIntoDb(result: BaseLoadMoreResponse<Item>) {
         db.runInTransaction {
             val start = db.LoadMoreDao().getNextIndex()
-            val items = result.getListData().mapIndexed { index, item ->
-                BaseLoadMoreEntity(indexInResponse = start + index, data = item)
+            val items = result.getListData().mapIndexed { index, entity ->
+                entity.indexInResponse = start + index
+                entity
             }
             db.LoadMoreDao().insert(items)
         }

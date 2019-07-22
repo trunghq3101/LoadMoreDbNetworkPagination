@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModel
  * Created by Hoang Trung on 18/07/2019
  */
 
-abstract class BaseLoadMoreWithDbViewModel: ViewModel() {
+abstract class BaseLoadMoreWithDbViewModel<Item: BaseLoadMoreEntity>: ViewModel() {
     private val initialLoad = MutableLiveData<Boolean>()
     private val repoResult = Transformations.map(initialLoad) {
         getInitData()
@@ -20,7 +20,7 @@ abstract class BaseLoadMoreWithDbViewModel: ViewModel() {
         it.networkState
     }
 
-    protected abstract fun getInitData(): Listing
+    protected abstract fun getInitData(): Listing<Item>
 
     fun loadData() { initialLoad.value = true }
 }
