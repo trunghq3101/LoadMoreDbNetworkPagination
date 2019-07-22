@@ -1,1 +1,1 @@
-include ':app', ':loadmoredbnetwork'
+include ':app'

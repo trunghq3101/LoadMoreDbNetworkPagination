@@ -35,13 +35,16 @@ class HomeMovieFragment : Fragment() {
     }
 
     fun initData() {
+
         recyclerHomeSpot.adapter = adapter
         recyclerHomeSpot.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_8)))
+
         ItemTouchHelper(MovieAdapter.SwipeCallback(adapter) { from, to ->
             viewModel.swapItems(from, to)
         }).apply {
             attachToRecyclerView(recyclerHomeSpot)
         }
+
         viewModel.loadData()
     }
 

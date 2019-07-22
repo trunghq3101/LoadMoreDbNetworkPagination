@@ -19,7 +19,7 @@ class MovieViewModel(
     }
 
     fun swapItems(from: Movie, to: Movie) {
-        return repository.swapItem(from, to)
+        repository.swapItem(from, to)
     }
 
     override fun syncDataToNetwork(item: Movie) {
