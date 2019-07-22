@@ -2,6 +2,8 @@ package com.trunghoang.generalapp.di
 
 import android.content.Context
 import com.miller.loadmoredbnetwork.LoadMoreDb
+import com.trunghoang.generalapp.data.local.MovieRoomDb
+import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.repository.MovieRepository
 import com.trunghoang.generalapp.data.repository.MovieRepositoryImpl
 import org.koin.dsl.module
@@ -20,4 +22,4 @@ val repositoryModule = module {
 
 fun createDiskExecutor(): Executor = Executors.newSingleThreadExecutor()
 
-fun createHomeSpotDb(context: Context): LoadMoreDb? = LoadMoreDb.create(context)
+fun createHomeSpotDb(context: Context): LoadMoreDb<Movie>? = MovieRoomDb.create(context)

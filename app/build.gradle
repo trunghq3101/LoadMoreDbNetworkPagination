@@ -18,12 +18,12 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField 'String', 'BASE_URL', "\"http://www.omdbapi.com/?apikey=2ed35bde/\""
+            buildConfigField 'String', 'BASE_URL', "\"https://www.omdbapi.com/\""
         }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            buildConfigField 'String', 'BASE_URL', "\"http://www.omdbapi.com/?apikey=2ed35bde/\""
+            buildConfigField 'String', 'BASE_URL', "\"https://www.omdbapi.com/\""
         }
     }
     dataBinding {

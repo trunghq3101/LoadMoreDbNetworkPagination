@@ -10,7 +10,7 @@ import com.miller.loadmoredbnetwork.BaseLoadMoreResponse
 data class MovieListResponse (
     @SerializedName("Search")
     val data: List<Movie>
-) : BaseLoadMoreResponse {
+) : BaseLoadMoreResponse<Movie> {
     override fun getListData(): List<Movie> {
         return data
     }

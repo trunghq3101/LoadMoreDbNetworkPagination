@@ -2,6 +2,7 @@ package com.trunghoang.generalapp.ui.home
 
 import com.miller.loadmoredbnetwork.BaseLoadMoreWithDbViewModel
 import com.miller.loadmoredbnetwork.Listing
+import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.repository.MovieRepository
 
 /**
@@ -10,13 +11,13 @@ import com.trunghoang.generalapp.data.repository.MovieRepository
 
 class MovieViewModel(
     private val repository: MovieRepository
-) : BaseLoadMoreWithDbViewModel() {
+) : BaseLoadMoreWithDbViewModel<Movie>() {
 
-    override fun getInitData(): Listing {
+    override fun getInitData(): Listing<Movie> {
         return repository.refreshData()
     }
 
-    fun swapItems(from: Int, to: Int) {
+    fun swapItems(from: Movie, to: Movie) {
         repository.swapItem(from, to)
     }
 }

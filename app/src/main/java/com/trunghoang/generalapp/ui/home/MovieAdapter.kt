@@ -1,17 +1,19 @@
 package com.trunghoang.generalapp.ui.home
 
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.miller.loadmoredbnetwork.BaseLoadMoreAdapter
-import com.miller.loadmoredbnetwork.BaseLoadMoreEntity
 import com.trunghoang.generalapp.BR
 import com.trunghoang.generalapp.R
+import com.trunghoang.generalapp.data.model.Movie
 
 /**
  * Created by Hoang Trung on 18/07/2019
  */
-class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
+class MovieAdapter : BaseLoadMoreAdapter<Movie>(homeSpotCallback) {
+
     override val itemBindingVariable: Int = BR.item
 
     override fun getItemLayoutRes(): Int {
@@ -20,7 +22,7 @@ class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
 
     class SwipeCallback(
         private val adapter: MovieAdapter,
-        private val onItemMove: (from: Int, to: Int) -> Unit
+        private val onItemMove: (from: Movie, to: Movie) -> Unit
     ) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
 
         override fun onMove(
@@ -33,9 +35,9 @@ class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
             val item1 = adapter.getItem(from)
             val item2 = adapter.getItem(to)
             if (item1 != null && item2 != null) {
-
+                Log.d("----------->", ": ${item1.indexInResponse} -- ${item2.indexInResponse}")
                 // Notify database to swap items here
-                onItemMove(from, to)
+                onItemMove(item1, item2)
 
                 return true
             }
@@ -69,12 +71,12 @@ class MovieAdapter : BaseLoadMoreAdapter(homeSpotCallback) {
 
 }
 
-val homeSpotCallback = object : DiffUtil.ItemCallback<BaseLoadMoreEntity<BaseLoadMoreEntity.Data>>() {
-    override fun areItemsTheSame(oldItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, newItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>): Boolean {
-        return oldItem == newItem
+val homeSpotCallback = object : DiffUtil.ItemCallback<Movie>() {
+    override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+        return oldItem.id == newItem.id
     }
 
-    override fun areContentsTheSame(oldItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>, newItem: BaseLoadMoreEntity<BaseLoadMoreEntity.Data>): Boolean {
+    override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
         return oldItem == newItem
     }
 
