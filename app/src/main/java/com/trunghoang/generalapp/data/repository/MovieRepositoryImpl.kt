@@ -16,8 +16,8 @@ import java.util.concurrent.Executors
  */
 
 class MovieRepositoryImpl(
-    private val ioExecutor: Executor,
-    private val db: LoadMoreDb<Movie>,
+    ioExecutor: Executor,
+    db: LoadMoreDb<Movie>,
     private val apiService: ApiService
 ) : BaseLoadMoreWithDbRepository<Movie, Int, MovieListResponse>(
     db = db,
@@ -41,24 +41,4 @@ class MovieRepositoryImpl(
     ): Call<MovieListResponse> {
         return apiService.searchMovies(keyword = "Avenger", page = key)
     }
-
-    override fun swapItem(from: Movie, to: Movie) {
-        Executors.newSingleThreadExecutor().execute {
-            val start = from.indexInResponse
-            val end = to.indexInResponse
-
-            val items = (db.LoadMoreDao() as MovieRoomDao).getBetween(start, end)
-            if (start < end) {
-                for (i in 0 until end - start) {
-                    Collections.swap(items, i, i+1)
-                }
-            } else {
-                for (i in end - start downTo 1) {
-                    Collections.swap(items, i, i - 1)
-                }
-            }
-            (db.LoadMoreDao() as MovieRoomDao).updateAll(items)
-        }
-    }
-
 }

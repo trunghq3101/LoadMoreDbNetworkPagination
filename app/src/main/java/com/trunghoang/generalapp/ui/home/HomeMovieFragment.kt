@@ -48,6 +48,7 @@ class HomeMovieFragment : Fragment() {
     fun observeField() {
         viewModel.data.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            viewModel.syncDataToNetwork(it.snapshot())
         })
         viewModel.networkState.observe(viewLifecycleOwner, Observer {
             adapter.networkState = it

@@ -1,5 +1,6 @@
 package com.miller.loadmoredbnetwork
 
+import android.graphics.Movie
 import androidx.paging.DataSource
 import androidx.room.*
 
@@ -17,6 +18,10 @@ interface LoadMoreDao<T: BaseLoadMoreEntity> {
     @Update
     fun update(item: T)
 
+    @Update
+    @JvmSuppressWildcards
+    fun updateAll(items: List<T>)
+
     @Query("SELECT * FROM page_data ORDER BY indexInResponse ASC")
     fun getPagingData(): DataSource.Factory<Int, T>
 
@@ -25,4 +30,7 @@ interface LoadMoreDao<T: BaseLoadMoreEntity> {
 
     @Query("SELECT * FROM page_data WHERE indexInResponse = :position ")
     fun getItem(position: Int): T
+
+    @Query("SELECT * FROM page_data WHERE indexInResponse BETWEEN :from AND :to")
+    fun getBetween(from: Int, to: Int): List<T>
 }

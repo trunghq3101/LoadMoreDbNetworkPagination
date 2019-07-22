@@ -8,6 +8,4 @@ import com.trunghoang.generalapp.data.model.MovieListResponse
  * Created by Hoang Trung on 19/07/2019
  */
 
-interface MovieRepository: ILoadMoreWithDbRepository<Movie, Int, MovieListResponse> {
-    fun swapItem(from: Movie, to: Movie)
-}
+interface MovieRepository: ILoadMoreWithDbRepository<Movie, Int, MovieListResponse>

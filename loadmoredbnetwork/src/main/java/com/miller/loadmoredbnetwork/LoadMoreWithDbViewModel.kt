@@ -22,5 +22,9 @@ abstract class BaseLoadMoreWithDbViewModel<Item: BaseLoadMoreEntity>: ViewModel(
 
     protected abstract fun getInitData(): Listing<Item>
 
+    abstract fun syncDataToNetwork(item: Item)
+
+    abstract fun syncDataToNetwork(items: List<Item>)
+
     fun loadData() { initialLoad.value = true }
 }
