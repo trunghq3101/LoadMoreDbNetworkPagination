@@ -1,6 +1,6 @@
 package com.trunghoang.generalapp.data.repository
 
-import com.miller.loadmoredbnetwork.ILoadMoreWithDbRepository
+import com.miller.responsivepaging.ILoadMoreWithDbRepository
 import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.model.MovieListResponse
 

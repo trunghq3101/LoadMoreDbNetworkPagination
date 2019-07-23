@@ -1,7 +1,7 @@
 package com.trunghoang.generalapp.di
 
 import android.content.Context
-import com.miller.loadmoredbnetwork.LoadMoreDb
+import com.miller.responsivepaging.LoadMoreDb
 import com.trunghoang.generalapp.data.local.MovieRoomDb
 import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.repository.MovieRepository

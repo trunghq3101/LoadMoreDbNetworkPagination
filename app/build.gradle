@@ -32,7 +32,7 @@ android {
 }
 
 dependencies {
-    implementation 'com.github.trunghq3101:LoadMoreDbNetworkPagination:1.0.0'
+    implementation 'com.github.trunghq3101:responsivepaging:1.0.1'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

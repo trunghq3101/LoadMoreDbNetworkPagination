@@ -1,8 +1,8 @@
 package com.trunghoang.generalapp.ui.home
 
 import android.util.Log
-import com.miller.loadmoredbnetwork.BaseLoadMoreWithDbViewModel
-import com.miller.loadmoredbnetwork.Listing
+import com.miller.responsivepaging.BaseLoadMoreWithDbViewModel
+import com.miller.responsivepaging.Listing
 import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.repository.MovieRepository
 

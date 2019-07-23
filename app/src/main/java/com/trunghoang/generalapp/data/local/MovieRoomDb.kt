@@ -3,7 +3,7 @@ package com.trunghoang.generalapp.data.local
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
-import com.miller.loadmoredbnetwork.LoadMoreDb
+import com.miller.responsivepaging.LoadMoreDb
 import com.trunghoang.generalapp.data.model.Movie
 
 /**

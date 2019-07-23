@@ -3,7 +3,7 @@ package com.trunghoang.generalapp.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
-import com.miller.loadmoredbnetwork.BaseLoadMoreEntity
+import com.miller.responsivepaging.BaseLoadMoreEntity
 
 /**
  * Created by Hoang Trung on 18/07/2019

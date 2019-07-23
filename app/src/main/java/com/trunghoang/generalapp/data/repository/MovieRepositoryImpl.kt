@@ -1,7 +1,7 @@
 package com.trunghoang.generalapp.data.repository
 
-import com.miller.loadmoredbnetwork.BaseLoadMoreWithDbRepository
-import com.miller.loadmoredbnetwork.LoadMoreDb
+import com.miller.responsivepaging.BaseLoadMoreWithDbRepository
+import com.miller.responsivepaging.LoadMoreDb
 import com.trunghoang.generalapp.data.model.Movie
 import com.trunghoang.generalapp.data.model.MovieListResponse
 import com.trunghoang.generalapp.data.remote.ApiService

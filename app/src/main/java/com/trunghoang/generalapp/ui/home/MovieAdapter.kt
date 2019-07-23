@@ -3,7 +3,7 @@ package com.trunghoang.generalapp.ui.home
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.miller.loadmoredbnetwork.BaseLoadMoreAdapter
+import com.miller.responsivepaging.BaseLoadMoreAdapter
 import com.trunghoang.generalapp.BR
 import com.trunghoang.generalapp.R
 import com.trunghoang.generalapp.data.model.Movie
