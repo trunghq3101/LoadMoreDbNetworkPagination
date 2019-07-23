@@ -1,10 +1,13 @@
 package com.miller.loadmoredbnetwork
 
+import android.graphics.Movie
 import androidx.annotation.MainThread
 import androidx.paging.DataSource
 import androidx.paging.toLiveData
 import com.miller.loadmoredbnetwork.ILoadMoreWithDbRepository.Companion.DEFAULT_NETWORK_PAGE_SIZE
+import java.util.*
 import java.util.concurrent.Executor
+import java.util.concurrent.Executors
 
 /**
  * Created by Hoang Trung on 15/07/2019
@@ -45,6 +48,25 @@ abstract class BaseLoadMoreWithDbRepository<Item: BaseLoadMoreEntity, Key, Respo
                 entity
             }
             db.LoadMoreDao().insert(items)
+        }
+    }
+
+    override fun swapItem(from: Item, to: Item) {
+        Executors.newSingleThreadExecutor().execute {
+            val start = from.indexInResponse
+            val end = to.indexInResponse
+
+            val items = db.LoadMoreDao().getBetween(start, end)
+            if (start < end) {
+                for (i in 0 until end - start) {
+                    Collections.swap(items, i, i+1)
+                }
+            } else {
+                for (i in end - start downTo 1) {
+                    Collections.swap(items, i, i - 1)
+                }
+            }
+            db.LoadMoreDao().updateAll(items)
         }
     }
 }

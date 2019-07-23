@@ -11,11 +11,4 @@ import com.trunghoang.generalapp.data.model.Movie
  */
 
 @Dao
-abstract class MovieRoomDao : LoadMoreDao<Movie> {
-    @Query("SELECT * FROM page_data WHERE indexInResponse BETWEEN :from AND :to")
-    abstract fun getBetween(from: Int, to: Int): List<Movie>
-
-    @Update
-    @JvmSuppressWildcards
-    abstract fun updateAll(movies: List<Movie>)
-}
+abstract class MovieRoomDao : LoadMoreDao<Movie>

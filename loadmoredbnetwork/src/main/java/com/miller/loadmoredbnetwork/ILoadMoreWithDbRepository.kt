@@ -28,4 +28,6 @@ interface ILoadMoreWithDbRepository<Item: BaseLoadMoreEntity, Key, ResponseType:
     fun getKey(): Key?
 
     fun nextKey(response: ResponseType)
+
+    fun swapItem(from: Item, to: Item)
 }

@@ -1,5 +1,6 @@
 package com.trunghoang.generalapp.ui.home
 
+import android.util.Log
 import com.miller.loadmoredbnetwork.BaseLoadMoreWithDbViewModel
 import com.miller.loadmoredbnetwork.Listing
 import com.trunghoang.generalapp.data.model.Movie
@@ -19,5 +20,12 @@ class MovieViewModel(
 
     fun swapItems(from: Movie, to: Movie) {
         repository.swapItem(from, to)
+    }
+
+    override fun syncDataToNetwork(item: Movie) {
+    }
+
+    override fun syncDataToNetwork(items: List<Movie>) {
+        Log.d("------>", " : Sync data")
     }
 }

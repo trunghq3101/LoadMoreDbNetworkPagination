@@ -35,19 +35,23 @@ class HomeMovieFragment : Fragment() {
     }
 
     fun initData() {
+
         recyclerHomeSpot.adapter = adapter
         recyclerHomeSpot.addItemDecoration(SpacesItemDecoration(resources.getDimensionPixelSize(R.dimen.dp_8)))
+
         ItemTouchHelper(MovieAdapter.SwipeCallback(adapter) { from, to ->
             viewModel.swapItems(from, to)
         }).apply {
             attachToRecyclerView(recyclerHomeSpot)
         }
+
         viewModel.loadData()
     }
 
     fun observeField() {
         viewModel.data.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            viewModel.syncDataToNetwork(it.snapshot())
         })
         viewModel.networkState.observe(viewLifecycleOwner, Observer {
             adapter.networkState = it

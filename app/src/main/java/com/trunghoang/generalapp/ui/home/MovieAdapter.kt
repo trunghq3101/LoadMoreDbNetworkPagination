@@ -1,6 +1,5 @@
 package com.trunghoang.generalapp.ui.home
 
-import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
@@ -25,20 +24,20 @@ class MovieAdapter : BaseLoadMoreAdapter<Movie>(homeSpotCallback) {
         private val onItemMove: (from: Movie, to: Movie) -> Unit
     ) : ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP or ItemTouchHelper.DOWN, ItemTouchHelper.RIGHT) {
 
+        private var from: Int = 0
+        private var to: Int = 0
+
         override fun onMove(
             recyclerView: RecyclerView,
             viewHolder: RecyclerView.ViewHolder,
             target: RecyclerView.ViewHolder
         ): Boolean {
-            val from = viewHolder.adapterPosition
-            val to = target.adapterPosition
+            from = viewHolder.adapterPosition
+            to = target.adapterPosition
             val item1 = adapter.getItem(from)
             val item2 = adapter.getItem(to)
             if (item1 != null && item2 != null) {
-                Log.d("----------->", ": ${item1.indexInResponse} -- ${item2.indexInResponse}")
-                // Notify database to swap items here
-                onItemMove(item1, item2)
-
+                adapter.notifyItemMoved(from, to)
                 return true
             }
             return false
@@ -48,8 +47,6 @@ class MovieAdapter : BaseLoadMoreAdapter<Movie>(homeSpotCallback) {
         }
 
         override fun isLongPressDragEnabled(): Boolean {
-
-            // It has to be true
             return true
         }
 
@@ -65,7 +62,11 @@ class MovieAdapter : BaseLoadMoreAdapter<Movie>(homeSpotCallback) {
             super.clearView(recyclerView, viewHolder)
             viewHolder.itemView.alpha = 1.0f
 
-            // Don't need to do anything here
+            val item1 = adapter.getItem(from)
+            val item2 = adapter.getItem(to)
+            if (item1 != null && item2 != null) {
+                onItemMove(item1, item2)
+            }
         }
     }
 
