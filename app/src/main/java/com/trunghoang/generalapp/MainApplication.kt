@@ -2,6 +2,7 @@ package com.trunghoang.generalapp
 
 import android.app.Application
 import com.trunghoang.generalapp.di.appModule
+import com.trunghoang.generalapp.di.networkModule
 import com.trunghoang.generalapp.di.repositoryModule
 import com.trunghoang.generalapp.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -17,7 +18,7 @@ class MainApplication : Application() {
 
         startKoin {
             androidContext(this@MainApplication)
-            modules(listOf(appModule, viewModelModule, repositoryModule))
+            modules(listOf(appModule, viewModelModule, repositoryModule, networkModule))
         }
     }
 }
